@@ -45,7 +45,7 @@ int main() {
         }   
     } while (res == -1);
     
-    printf("sent\n");
+    printf("Message was successfully sent to queue with id %d\n", id);
     
     msg.type = 45;
     strcpy((char*)&msg.payload, "Welcome!");
@@ -60,7 +60,7 @@ int main() {
         }
     } while (res == -1);
     
-    printf("sent\n");
+    printf("Message was successfully sent to queue with id %d\n", id);
     
     msg.type = 966789;
     strcpy((char*)&msg.payload, "&&&&&7777777777777777777444444!");
@@ -75,7 +75,7 @@ int main() {
         }
     } while (res == -1);
     
-    printf("sent\n");
+    printf("Message was successfully sent to queue with id %d\n", id);
     
     struct msqid_ds stat;
         
@@ -87,9 +87,16 @@ int main() {
     }
     printf("msg_cbytes %lu\n", stat.msg_cbytes);
     printf("msg_qnum %lu\n", stat.msg_qnum);
-    printf("msg_qbytes %lu\n", stat.msg_qbytes);
+    printf("msg_qbytes max num of bytes %lu\n", stat.msg_qbytes);
+    printf("Owner's UID: %d\n", stat.msg_perm.uid);
+    printf("Owner's GID: %d\n", stat.msg_perm.gid);
+    printf("Message stime: %lu\n", stat.msg_stime);
+    printf("Message rtime: %lu\n", stat.msg_rtime);
+    printf("Message ctime: %lu\n", stat.msg_ctime);
+
     
     res = msgctl(id, IPC_RMID, NULL);
+    printf("Removing existing queue\n");
     if (res == -1) {
         perror("Failed to remove queue");
         exit(EXIT_FAILURE);
