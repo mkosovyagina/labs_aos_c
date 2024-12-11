@@ -49,7 +49,7 @@ int main() {
                         usleep(1000);}
             }    
     printf("Child process is finishing\n");
-    //exit(5);
+    exit(5);
     }
 
 }

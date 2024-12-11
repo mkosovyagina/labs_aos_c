@@ -34,7 +34,7 @@ int main() {
     printf("Parent process executes, pid = %d\n", parent_pid);
     printf("Parent process parent pid = %d\n", parent_ppid);
     printf("Parent process group id = %d\n", parent_pgid);
-    close(file_descriptors_pipe[0]);
+    //close(file_descriptors_pipe[0]);
     write(file_descriptors_pipe[1], message, message_len);
     
     child_pid_finished = wait(&status);
@@ -50,7 +50,7 @@ int main() {
     printf("Child process executes, pid = %d\n", child_pid);
     printf("Child process parent pid = %d\n", child_ppid);
     printf("Child process group id = %d\n", child_pgid);
-    close(file_descriptors_pipe[1]);
+    //close(file_descriptors_pipe[1]);
     printf("Child process is readind from pipe\n");
     read(file_descriptors_pipe[0], &read_buffer, message_len);
     printf("%s\n", read_buffer);
