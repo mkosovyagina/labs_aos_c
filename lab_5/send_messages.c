@@ -41,25 +41,25 @@ void send(int id, int type, char* text) {
 int main(int argc, char* argv[]) {
     int res;
     
-    int id = atoi(argv[1]);
-    long type = atoi(argv[2]);
+    //int id = atoi(argv[1]);
+    //long type = atoi(argv[2]);
     
-    printf("Requested message queue id %d\n", id);
-    printf("Requested message queue type %ld\n", type);
+    //printf("Requested message queue id %d\n", id);
+    //printf("Requested message queue type %ld\n", type);
   
-    struct message_simple msg;
-    for (int i = 0; i < 3; i++) {   
-        res = msgrcv(id, &msg, sizeof(msg.payload), type, MSG_NOERROR | IPC_NOWAIT);
-        if (res == -1 && errno == ENOMSG) {
-            printf("No messages with type %lu\n", type);
-            exit(EXIT_FAILURE);
-        } else if (res == -1) {
-            perror("Something went wrong\n");
-            exit(EXIT_FAILURE);
-        }
-        printf("Message type %ld\n", msg.type);
-        printf("Message text %s\n", msg.payload);
+    key_t key = ftok("/home/vboxuser/mvkosovy/labs_aos_c/lab_5/token.txt", 1);
+    printf("%d\n", key);
+    int id = msgget(key, IPC_CREAT);
+    if (id == -1) {
+        perror("Failed to get message queue");
+        exit(EXIT_FAILURE);
     }
+    printf("queue id %d\n", id);    
+    send(id, 1, "Hello");
+    send(id, 1, "Welcome");
+    send(id, 1, "123456");
+    send(id, 2, "Hello!!!");
+    send(id, 3, "Blablabla");
     
     return 0;
 }
