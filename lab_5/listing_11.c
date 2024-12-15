@@ -25,9 +25,9 @@ struct message {
 
 void process(int queue_id, char* text) {
     int file_descriptor;
-    file_descriptor = open("/tmp/file.txt", O_WRONLY | O_CREAT | O_APPEND, 0666);
+    file_descriptor = open("file.txt", O_WRONLY | O_CREAT, 0666);
     if (file_descriptor == -1) {
-        perror("open");
+        perror("Failed to open file");
         exit(1);
     }
     //file_descriptor = 1;
@@ -38,6 +38,7 @@ void process(int queue_id, char* text) {
         lseek(file_descriptor, 0, SEEK_END);
         write(file_descriptor, text, strlen(text));
         msgsnd(queue_id, &msg, 0, 0);
+        sleep(1);
     }
     close(file_descriptor);
 }
@@ -66,34 +67,3 @@ int main(int argc, char* argv[]) {
     }
 }
 
-//msgctl(id_client, IPC_RMID, NULL);
-    /*key_t key = ftok(argv[0], 1);
-    printf("%d\n", key);
-    int id = msgget(key, IPC_CREAT | 0666);
-    if (id == -1) {
-        perror("Failed to get message queue");
-        exit(EXIT_FAILURE);
-    }
-    printf("queue id %d\n", id);    */
-    //send(id, 1, "Hello");
-    //send(id, 1, "Welcome");
-    //send(id, 1, "123456");
-    //send(id, 2, "Hello!!!");
-    //send(id, 3, "Blablabla");
-
-/*
-    struct message_simple msg;
-    /for (int i = 0; i < 3; i++) {   
-        memset(&msg, 0, sizeof(msg));
-        res = msgrcv(id, &msg, msg_size, 0, MSG_NOERROR | IPC_NOWAIT);
-        if (res == -1 && errno == ENOMSG) {
-            printf("No messages\n");
-            exit(EXIT_FAILURE);
-        } else if (res == -1) {
-            perror("Something went wrong\n");
-            exit(EXIT_FAILURE);
-        }
-        printf("Message type %ld\n", msg.type);
-        printf("Message text %s\n", msg.payload);
-    }
-*/    
